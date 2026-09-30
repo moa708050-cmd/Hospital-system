@@ -1,0 +1,190 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+class Patient {
+private:
+    int id;
+    string name;
+    int age;
+    string gender;
+    string disease;
+    string doctor;
+
+public:
+    Patient(int id, string name, int age, string gender,
+            string disease, string doctor) {
+        this->id = id;
+        this->name = name;
+        this->age = age;
+        this->gender = gender;
+        this->disease = disease;
+        this->doctor = doctor;
+    }
+
+    int getId() {
+        return id;
+    }
+
+    void display() {
+        cout << "\n---------------------------\n";
+        cout << "Patient ID   : " << id << endl;
+        cout << "Name         : " << name << endl;
+        cout << "Age          : " << age << endl;
+        cout << "Gender       : " << gender << endl;
+        cout << "Disease      : " << disease << endl;
+        cout << "Doctor       : " << doctor << endl;
+        cout << "---------------------------\n";
+    }
+};
+
+class Hospital {
+private:
+    vector<Patient> patients;
+
+public:
+
+    void addPatient() {
+        int id, age;
+        string name, gender, disease, doctor;
+
+        cout << "\nEnter Patient ID: ";
+        cin >> id;
+
+        // Check if ID already exists
+        for (Patient p : patients) {
+            if (p.getId() == id) {
+                cout << "Patient ID already exists!\n";
+                return;
+            }
+        }
+
+        cin.ignore();
+
+        cout << "Enter Patient Name: ";
+        getline(cin, name);
+
+        cout << "Enter Age: ";
+        cin >> age;
+
+        cin.ignore();
+
+        cout << "Enter Gender: ";
+        getline(cin, gender);
+
+        cout << "Enter Disease: ";
+        getline(cin, disease);
+
+        cout << "Enter Doctor Name: ";
+        getline(cin, doctor);
+
+        Patient p(id, name, age, gender, disease, doctor);
+
+        patients.push_back(p);
+
+        cout << "\nPatient added successfully!\n";
+    }
+
+    void displayPatients() {
+        if (patients.empty()) {
+            cout << "\nNo patients found.\n";
+            return;
+        }
+
+        cout << "\n===== ALL PATIENTS =====\n";
+
+        for (Patient p : patients) {
+            p.display();
+        }
+    }
+
+    void searchPatient() {
+        int id;
+
+        cout << "\nEnter Patient ID: ";
+        cin >> id;
+
+        for (Patient p : patients) {
+            if (p.getId() == id) {
+                cout << "\nPatient Found!\n";
+                p.display();
+                return;
+            }
+        }
+
+        cout << "\nPatient not found.\n";
+    }
+
+    void deletePatient() {
+        int id;
+
+        cout << "\nEnter Patient ID to delete: ";
+        cin >> id;
+
+        for (int i = 0; i < patients.size(); i++) {
+
+            if (patients[i].getId() == id) {
+
+                patients.erase(patients.begin() + i);
+
+                cout << "\nPatient deleted successfully!\n";
+                return;
+            }
+        }
+
+        cout << "\nPatient not found.\n";
+    }
+};
+
+int main() {
+
+    Hospital hospital;
+
+    int choice;
+
+    do {
+        cout << "\n\n";
+        cout << "==============================\n";
+        cout << "     HOSPITAL MANAGEMENT\n";
+        cout << "==============================\n";
+        cout << "1. Add Patient\n";
+        cout << "2. Display All Patients\n";
+        cout << "3. Search Patient\n";
+        cout << "4. Delete Patient\n";
+        cout << "5. Exit\n";
+        cout << "==============================\n";
+
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+
+        case 1:
+            hospital.addPatient();
+            break;
+
+        case 2:
+            hospital.displayPatients();
+            break;
+
+        case 3:
+            hospital.searchPatient();
+            break;
+
+        case 4:
+            hospital.deletePatient();
+            break;
+
+        case 5:
+            cout << "\nThank you for using Hospital System!\n";
+            break;
+
+        default:
+            cout << "\nInvalid choice!\n";
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
